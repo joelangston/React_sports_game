@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Sports Game</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+
+    <div id='root'></div>
+
+
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script type="text/babel"</script>
+    
+
+    class Team extends React.Component{
+    constructor(props){
+        super(props)
+        
+
+this.state = {
+    venue:'Bridgman High School',
+    shotPercent:0,
+    score:0,
+    shotsTaken:0,
+    resets:0,
+    
+} 
+this.shotSound = new Audio('https://www.myinstants.com/media/sounds/211690_sounddogs__ne.mp3')
+
+this.scoreSound = new Audio('https://www.myinstants.com/media/sounds/yahoo-luigi.mp3')
+
+
+
+}
+
+
+handleShoot = (event) => {  
+    
+    let score = this.state.score
+    setTimeout(()=> {
+
+        this.shotSound.play()
+    }, 25 )
+
+    if( Math.random() > 0.5){
+        score += 1
+        setTimeout(()=> {
+            this.scoreSound.play()
+        }, 100 )
+    }
+        this.setState((currentState, props)=>({   
+                       
+            
+            shotsTaken:currentState.shotsTaken + 1,
+            score,
+        }
+    ))
+     
+}
+handleReset = (event) => {
+     
+    
+    this.setState((currentState, props)=> ({
+        
+        score: currentState.score = 0,
+        shotsTaken:currentState.shotsTaken = 0,
+        resets:currentState.resets + 1,
+        shotPercent:currentState.shotPercent  = 0
+        
+    }
+    ))
+    
+    
+}
+
+
+
+
+render(){
+    let shotPercentDiv
+
+    if(this.state.shotsTaken){
+const shotPercent = Math.round((this.state.score / this.state.shotsTaken)* 100)
+         shotPercentDiv =(
+            <div><strong>Shooting %:{shotPercent}</strong></div>
+         )
+    }
+return(
+    <div className='Game'>
+        
+        <h3>{this.props.name}</h3>
+        <div className='logo'><img src={this.props.logo} alt='team logo'/></div>
+
+        <div className='shotDiv'>
+        <button id="shoot" onClick={this.handleShoot}>Shoot</button>
+        <div> Score: {this.state.score}</div>
+
+       <div>  Shots: {this.state.shotsTaken}</div>
+        {shotPercentDiv}
+        </div>
+
+
+        <div><button id='reset' onClick={this.handleReset}>Reset</button> <br/>
+        Resets: {this.state.resets}</div>
+        
+    </div>
+    )
+}
+
+} 
+
+function Game(props){
+return(
+<div className='Game'>
+<h1>Welcome to {props.venue}!</h1>
+<div className='stats'>
+        
+        <Team
+
+       name={props.homeTeam.name} 
+       logo={props.homeTeam.logoSrc} 
+       />
+
+       <div className='versus'><h1> VS </h1></div>
+       
+       <Team
+
+name={props.visitingTeam.name} 
+logo={props.visitingTeam.logoSrc} 
+       
+       />
+
+        </div>
+    </div>
+
+
+
+)
+
+
+}
+    
+
+
+
+function App (props) {
+    const bees = {
+        name:'Bridgman Bees',
+       logoSrc:'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT2l293ds45CtdqqTTZ-pu0CWDvshTaw-458Q&usqp=CAU'
+    }
+    const crimson = {
+        name:'Maple Grove Crimson',
+       logoSrc:'https://s3-us-west-2.amazonaws.com/sportshub2-uploads-prod/files/sites/590/2018/02/16183547/logo_outline-17.png' 
+    }
+    const lancers = {
+        name:'Lakeshore Lancers',
+       logoSrc:"https://s3-us-west-2.amazonaws.com/sportshub2-uploads-prod/files/sites/184/2017/07/13004558/323.png"
+    }
+    const shamrocks = {
+        name:'Berrien Springs Shamrocks',
+       logoSrc:"https://static.hudl.com/users/prod/1380983_87b6626b0b2b4b0bab68de9cdecc1501.jpg"
+    }
+return (
+    <div className='App'>
+        <Game venue='Bridgman High School'
+        homeTeam={bees}
+        visitingTeam={crimson}
+        />
+        
+        <Game venue=' Berrien Springs High School'
+         homeTeam={shamrocks}
+         visitingTeam={lancers}
+        />
+    </div>
+       
+)
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+ReactDOM.render(
+<App/>,document.getElementById('root'))

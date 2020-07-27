@@ -1,0 +1,35 @@
+*{box-sizing: border-box;
+    font-size: 38px;
+background-color: black;
+color: white;
+}
+
+body{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+
+}
+
+img{
+    width: 200px;
+    
+    margin:20px;
+}
+.Game{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+   
+}
+.shotDiv{
+    padding: 50px;
+    
+}
+
+
+
+
